@@ -51,6 +51,7 @@ export const auth = betterAuth({
         }
       } catch (err) {
         console.error("Unexpected error sending reset password email:", err);
+        throw err;
       }
     },
   },
