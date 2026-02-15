@@ -5,19 +5,15 @@ import {
   Sparkles,
   Wand2,
   MessageSquare,
-  Zap,
-  BookOpen,
   Globe,
-  Layers,
   GraduationCap,
   ArrowRight,
-  CheckCircle2,
   Star,
-  Menu,
 } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { ModeToggle } from "@/components/mode-toggle";
+import { MobileNav } from "@/components/mobile-nav";
 
 export const metadata: Metadata = {
   title: "LESSONOS — AI Tutorial Generator | Create Lessons on Any Topic",
@@ -140,22 +136,20 @@ export default async function LandingPage() {
               )}
             </nav>
 
-            {/* Mobile menu button */}
-            <button className="md:hidden p-2 text-muted-foreground hover:text-foreground">
-              <Menu className="h-5 w-5" />
-            </button>
+            {/* Mobile menu */}
+            <MobileNav session={!!session} />
           </div>
         </header>
 
         <main>
           {/* ═══════════════════ HERO SECTION ═══════════════════ */}
-          <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pb-20 pt-32">
+          <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 sm:px-6 pb-16 sm:pb-20 pt-24 sm:pt-32">
             {/* Background decoration */}
             <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,var(--secondary),transparent_70%)] opacity-50" />
             <div className="absolute top-20 left-10 w-72 h-72 bg-primary/3 rounded-full blur-3xl -z-10" />
             <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/3 rounded-full blur-3xl -z-10" />
 
-            <div className="container mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="container mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
               {/* Left: Copy */}
               <div className="text-center lg:text-left">
                 <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-4 py-1.5 text-xs font-medium tracking-tight text-foreground animate-fade-in-up">
@@ -163,16 +157,16 @@ export default async function LandingPage() {
                   <span>AI-Powered Learning — Any Topic, Any Field</span>
                 </div>
 
-                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-[1.1] animate-fade-in-up animation-delay-100">
+                <h1 className="text-5xl leading-[1.3] font-extrabold tracking-tight sm:text-5xl lg:text-6xl animate-fade-in-up animation-delay-100">
                   Learn anything.{" "}
                   <span className="notation-underline">Structured by AI.</span>
-                  <br />
-                  <span className="text-muted-foreground">
+                  <br className="hidden sm:block" />
+                  <span className="text-muted-foreground block">
                     Mastered by you.
                   </span>
                 </h1>
 
-                <p className="mt-6 max-w-xl text-lg text-muted-foreground leading-relaxed animate-fade-in-up animation-delay-200">
+                <p className="mt-4 sm:mt-6 max-w-xl text-base sm:text-lg text-muted-foreground leading-relaxed animate-fade-in-up animation-delay-200">
                   Tell LESSONOS what you want to learn — from React hooks to
                   quantum physics — and get an expertly structured tutorial in
                   seconds. Edit, refine, and save lessons that actually stick.
@@ -214,12 +208,12 @@ export default async function LandingPage() {
           </section>
 
           {/* ═══════════════════ SOCIAL PROOF BAR ═══════════════════ */}
-          <section className="py-12 border-y border-border bg-muted/20">
-            <div className="container mx-auto max-w-7xl px-6">
-              <p className="text-center text-sm font-medium text-muted-foreground mb-8 tracking-wide uppercase">
+          <section className="py-8 sm:py-12 border-y border-border bg-muted/20">
+            <div className="container mx-auto max-w-7xl px-4 sm:px-6">
+              <p className="text-center text-xs sm:text-sm font-medium text-muted-foreground mb-6 sm:mb-8 tracking-wide uppercase">
                 Trusted by learners and professionals worldwide
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-muted-foreground/60">
+              <div className="flex flex-wrap items-center justify-center gap-x-8 sm:gap-x-12 gap-y-4 text-muted-foreground/60">
                 <div className="flex items-center gap-2 text-lg font-bold tracking-tight">
                   <GraduationCap className="h-5 w-5" />
                   <span>10,000+ Lessons Created</span>
@@ -241,24 +235,24 @@ export default async function LandingPage() {
           {/* ═══════════════════ FEATURES SECTION ═══════════════════ */}
           <section
             id="features"
-            className="py-28 bg-background relative overflow-hidden"
+            className="py-16 sm:py-28 bg-background relative overflow-hidden"
           >
             {/* Subtle background decoration */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/2 rounded-full blur-3xl -z-10" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/2 rounded-full blur-3xl -z-10" />
 
-            <div className="container mx-auto max-w-7xl px-6">
+            <div className="container mx-auto max-w-7xl px-4 sm:px-6">
               {/* Section Header */}
-              <div className="mb-16 text-center">
+              <div className="mb-10 sm:mb-16 text-center">
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-4 py-1.5 text-xs font-medium tracking-tight text-muted-foreground mb-6">
                   <Sparkles className="h-3.5 w-3.5" />
                   <span>Powerful Features</span>
                 </div>
-                <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
                   Everything you need to{" "}
                   <span className="notation-underline">master any topic</span>.
                 </h2>
-                <p className="mt-5 max-w-2xl mx-auto text-lg text-muted-foreground leading-relaxed">
+                <p className="mt-4 sm:mt-5 max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground leading-relaxed">
                   LESSONOS goes beyond simple Q&A. It creates structured,
                   persistent learning modules that adapt to your level.
                 </p>
@@ -442,20 +436,20 @@ export default async function LandingPage() {
           {/* ═══════════════════ HOW IT WORKS ═══════════════════ */}
           <section
             id="how-it-works"
-            className="py-28 bg-background border-y border-border"
+            className="py-16 sm:py-28 bg-background border-y border-border"
           >
-            <div className="container mx-auto max-w-7xl px-6">
-              <div className="mb-20 text-center">
+            <div className="container mx-auto max-w-7xl px-4 sm:px-6">
+              <div className="mb-12 sm:mb-20 text-center">
                 <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground">
                   How It Works
                 </h2>
-                <p className="mt-4 text-4xl font-bold tracking-tight">
+                <p className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight">
                   Three steps to{" "}
                   <span className="notation-highlight">mastery</span>.
                 </p>
               </div>
 
-              <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center max-w-6xl mx-auto">
+              <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24 items-center max-w-6xl mx-auto">
                 {/* Left Column: Illustration (No Border) */}
                 <div className="flex justify-center lg:justify-end order-2 lg:order-1">
                   <div className="relative w-full max-w-md">
@@ -538,21 +532,21 @@ export default async function LandingPage() {
           </section>
 
           {/* ═══════════════════ TESTIMONIALS ═══════════════════ */}
-          <section id="testimonials" className="py-28 bg-background">
-            <div className="container mx-auto max-w-7xl px-6">
-              <div className="mb-20 text-center">
+          <section id="testimonials" className="py-16 sm:py-28 bg-background">
+            <div className="container mx-auto max-w-7xl px-4 sm:px-6">
+              <div className="mb-12 sm:mb-20 text-center">
                 <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground">
                   Testimonials
                 </h2>
-                <p className="mt-4 text-4xl font-bold tracking-tight">
+                <p className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight">
                   Loved by <span className="notation-underline">learners</span>{" "}
                   everywhere.
                 </p>
               </div>
 
-              <div className="grid gap-8 md:grid-cols-3">
+              <div className="grid gap-6 sm:gap-8 md:grid-cols-3">
                 {/* Testimonial 1 */}
-                <div className="notation-card p-8 space-y-4">
+                <div className="notation-card p-6 sm:p-8 space-y-4">
                   <div className="flex gap-1">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -576,7 +570,7 @@ export default async function LandingPage() {
                 </div>
 
                 {/* Testimonial 2 */}
-                <div className="notation-card p-8 space-y-4">
+                <div className="notation-card p-6 sm:p-8 space-y-4">
                   <div className="flex gap-1">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -599,7 +593,7 @@ export default async function LandingPage() {
                 </div>
 
                 {/* Testimonial 3 */}
-                <div className="notation-card p-8 space-y-4">
+                <div className="notation-card p-6 sm:p-8 space-y-4">
                   <div className="flex gap-1">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -625,10 +619,10 @@ export default async function LandingPage() {
           </section>
 
           {/* ═══════════════════ FINAL CTA ═══════════════════ */}
-          <section className="py-32 relative overflow-hidden bg-muted/20 border-t border-border">
+          <section className="py-20 sm:py-32 relative overflow-hidden bg-muted/20 border-t border-border">
             <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom,var(--secondary),transparent_70%)] opacity-40" />
 
-            <div className="container mx-auto max-w-7xl px-6 relative z-10 text-center">
+            <div className="container mx-auto max-w-7xl px-4 sm:px-6 relative z-10 text-center">
               {/* CTA Illustration */}
               <div className="flex justify-center mb-10">
                 <Image
@@ -640,7 +634,7 @@ export default async function LandingPage() {
                 />
               </div>
 
-              <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
                 Ready to{" "}
                 <span className="notation-highlight">
                   accelerate your learning
@@ -667,7 +661,7 @@ export default async function LandingPage() {
 
         {/* ═══════════════════ FOOTER ═══════════════════ */}
         <footer className="border-t border-border py-16 bg-background">
-          <div className="container mx-auto max-w-7xl px-6">
+          <div className="container mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid gap-12 md:grid-cols-4">
               {/* Brand */}
               <div className="md:col-span-2 space-y-4">
