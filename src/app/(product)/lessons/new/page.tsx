@@ -20,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { generateLessonAction } from "@/app/actions/generate-lesson";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -33,9 +32,32 @@ export default function GenerateLessonPage() {
     setIsGenerating(true);
 
     const formData = new FormData(event.currentTarget);
+    const topic = formData.get("topic") as string;
+    const difficulty = formData.get("difficulty") as string;
+    const language = formData.get("language") as string;
+
     try {
-      const result = await generateLessonAction(formData);
-      if (result?.lessonId) {
+      const response = await fetch("/api/generate-lesson", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic, difficulty, language }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+
+      // Read the NDJSON stream
+      const text = await response.text();
+      const lines = text.trim().split("\n");
+      const lastLine = lines[lines.length - 1];
+      const result = JSON.parse(lastLine);
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      if (result.lessonId) {
         router.push(`/lessons/${result.lessonId}`);
       }
     } catch (error) {
