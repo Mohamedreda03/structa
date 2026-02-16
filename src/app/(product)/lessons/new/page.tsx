@@ -39,10 +39,8 @@ export default function GenerateLessonPage() {
         setIsGenerating(false);
       }
     } catch {
-      // redirect() throws an error internally — that's expected
-      // Only show error if it's NOT a redirect
-      setIsGenerating(false);
-      toast.error("Failed to generate lesson. Please try again.");
+      // redirect() throws internally — this catch is expected on success
+      // Real errors are returned as { error } objects above
     }
   };
 
