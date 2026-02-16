@@ -8,6 +8,7 @@ import { headers } from "next/headers";
 import { db } from "@/db";
 import { lessons, lessonSections } from "@/db/schema";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 const lessonSchema = z.object({
   title: z.string().describe("The title of the lesson"),
@@ -31,7 +32,7 @@ export async function generateLessonAction(formData: FormData) {
   const language = (formData.get("language") as string) || "English";
 
   if (!topic || !difficulty) {
-    throw new Error("Topic and difficulty are required");
+    return { error: "Topic and difficulty are required" };
   }
 
   const session = await auth.api.getSession({
@@ -39,8 +40,10 @@ export async function generateLessonAction(formData: FormData) {
   });
 
   if (!session) {
-    throw new Error("Unauthorized");
+    return { error: "Unauthorized" };
   }
+
+  let lessonId: string | null = null;
 
   try {
     const { output } = await generateText({
@@ -67,7 +70,7 @@ export async function generateLessonAction(formData: FormData) {
     });
 
     if (!output) {
-      throw new Error("AI failed to generate lesson content");
+      return { error: "AI failed to generate lesson content" };
     }
 
     const { title, sections } = output;
@@ -85,7 +88,7 @@ export async function generateLessonAction(formData: FormData) {
       .returning();
 
     if (!newLesson) {
-      throw new Error("Failed to create lesson in database");
+      return { error: "Failed to create lesson in database" };
     }
 
     if (sections && sections.length > 0) {
@@ -99,10 +102,13 @@ export async function generateLessonAction(formData: FormData) {
       );
     }
 
+    lessonId = newLesson.id;
     revalidatePath("/dashboard");
-    return { lessonId: newLesson.id };
   } catch (error) {
     console.error("Error in generateLessonAction:", error);
-    throw error;
+    return { error: "Failed to generate lesson. Please try again." };
   }
+
+  // redirect() must be called OUTSIDE try/catch because it throws internally
+  redirect(`/lessons/${lessonId}`);
 }

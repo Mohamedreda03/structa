@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,48 +19,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { generateLessonAction } from "@/app/actions/generate-lesson";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function GenerateLessonPage() {
   const [isGenerating, setIsGenerating] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsGenerating(true);
 
     const formData = new FormData(event.currentTarget);
-    const topic = formData.get("topic") as string;
-    const difficulty = formData.get("difficulty") as string;
-    const language = formData.get("language") as string;
-
     try {
-      const response = await fetch("/api/generate-lesson", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic, difficulty, language }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Request failed");
+      const result = await generateLessonAction(formData);
+      // If we get here, it means redirect didn't happen (error case)
+      if (result?.error) {
+        toast.error(result.error);
+        setIsGenerating(false);
       }
-
-      // Read the NDJSON stream
-      const text = await response.text();
-      const lines = text.trim().split("\n");
-      const lastLine = lines[lines.length - 1];
-      const result = JSON.parse(lastLine);
-
-      if (result.error) {
-        throw new Error(result.error);
-      }
-
-      if (result.lessonId) {
-        router.push(`/lessons/${result.lessonId}`);
-      }
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // redirect() throws an error internally — that's expected
+      // Only show error if it's NOT a redirect
       setIsGenerating(false);
       toast.error("Failed to generate lesson. Please try again.");
     }
