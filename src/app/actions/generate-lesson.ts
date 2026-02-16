@@ -45,7 +45,7 @@ export async function generateLessonAction(formData: FormData) {
   try {
     const { output } = await generateText({
       model: google("gemini-2.5-flash"),
-          system: `You are a professional instructor across all fields. 
+      system: `You are a professional instructor across all fields. 
           Provide clear, detailed, and systematic technical explanations in ${language}. 
           Prioritize numerous real-life examples and practical analogies to ground theoretical concepts. 
           Be concise, accurate, and professional. Use structured Markdown for all content.
@@ -57,7 +57,8 @@ export async function generateLessonAction(formData: FormData) {
           2. ALWAYS specify a language for code blocks (e.g., \`\`\`bash, \`\`\`typescript).
           3. Ensure code blocks contain actual code or commands.
           4. Use proper heading levels (##, ###) for structure.
-          5. Ensure all Markdown is valid and well-formatted.`,      output: Output.object({
+          5. Ensure all Markdown is valid and well-formatted.`,
+      output: Output.object({
         schema: lessonSchema,
       }),
       prompt: `Create a comprehensive, structured lesson in ${language} about "${topic}" for a ${difficulty} level audience. 
