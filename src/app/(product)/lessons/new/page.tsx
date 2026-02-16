@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { generateLessonAction } from "@/app/actions/generate-lesson";
+import { createLessonAction } from "@/app/actions/generate-lesson";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -32,15 +32,13 @@ export default function GenerateLessonPage() {
 
     const formData = new FormData(event.currentTarget);
     try {
-      const result = await generateLessonAction(formData);
-      // If we get here, it means redirect didn't happen (error case)
+      const result = await createLessonAction(formData);
       if (result?.error) {
         toast.error(result.error);
         setIsGenerating(false);
       }
     } catch {
-      // redirect() throws internally — this catch is expected on success
-      // Real errors are returned as { error } objects above
+      // redirect() throws internally — expected on success
     }
   };
 

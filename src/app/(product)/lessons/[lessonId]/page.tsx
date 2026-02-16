@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { lessons, lessonSections } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import LessonEditorWrapper from "./lesson-editor-wrapper";
+import LessonGeneratingWrapper from "./lesson-generating-wrapper";
 
 interface PageProps {
   params: Promise<{
@@ -13,8 +14,8 @@ interface PageProps {
 export default async function LessonPage({ params }: PageProps) {
   const { lessonId } = await params;
 
-  // Validate UUID to prevent database error on non-UUID strings like "lesson-1"
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   if (!uuidRegex.test(lessonId)) {
     notFound();
   }
@@ -25,6 +26,31 @@ export default async function LessonPage({ params }: PageProps) {
 
   if (!lesson) {
     notFound();
+  }
+
+  // If the lesson is still generating, show the generating UI
+  if (lesson.status === "generating") {
+    return (
+      <LessonGeneratingWrapper
+        lessonId={lesson.id}
+        topic={lesson.topic}
+        difficulty={lesson.difficulty}
+        language={lesson.language}
+      />
+    );
+  }
+
+  // If generation failed, show error with retry
+  if (lesson.status === "failed") {
+    return (
+      <LessonGeneratingWrapper
+        lessonId={lesson.id}
+        topic={lesson.topic}
+        difficulty={lesson.difficulty}
+        language={lesson.language}
+        failed
+      />
+    );
   }
 
   const sections = await db.query.lessonSections.findMany({
