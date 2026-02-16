@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.29",
+    "@ai-sdk/react": "^3.0.88",
     "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/typography": "^0.5.19",
     "ai": "^6.0.86",

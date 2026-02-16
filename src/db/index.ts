@@ -1,14 +1,14 @@
-import { drizzle } from "drizzle-orm/node-postgres"
-import { Pool } from "pg"
-import * as schema from "./schema"
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
+import * as schema from "./schema";
 
-const connectionString = process.env.DATABASE_URL
+const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
   if (process.env.NODE_ENV === "production") {
-    throw new Error("DATABASE_URL is not set")
+    throw new Error("DATABASE_URL is not set");
   } else {
-    console.warn("DATABASE_URL is not set. Database operations will fail.")
+    console.warn("DATABASE_URL is not set. Database operations will fail.");
   }
 }
 
@@ -17,11 +17,18 @@ if (!connectionString) {
  * during hot reloading.
  */
 const globalForDb = globalThis as unknown as {
-  pool: Pool | undefined
-}
+  pool: Pool | undefined;
+};
 
-const pool = globalForDb.pool ?? new Pool({ connectionString })
+const pool =
+  globalForDb.pool ??
+  new Pool({
+    connectionString,
+    max: 5,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000,
+  });
 
-if (process.env.NODE_ENV !== "production") globalForDb.pool = pool
+if (process.env.NODE_ENV !== "production") globalForDb.pool = pool;
 
-export const db = drizzle(pool, { schema })
+export const db = drizzle(pool, { schema });

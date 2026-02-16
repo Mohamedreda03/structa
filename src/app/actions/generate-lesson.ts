@@ -15,25 +15,38 @@ export async function createLessonAction(formData: FormData) {
     return { error: "Topic and difficulty are required" };
   }
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  let session;
+  try {
+    session = await auth.api.getSession({
+      headers: await headers(),
+    });
+  } catch (error) {
+    console.error("Session error:", error);
+    return { error: "Connection error. Please try again." };
+  }
 
   if (!session) {
     return { error: "Unauthorized" };
   }
 
-  const [newLesson] = await db
-    .insert(lessons)
-    .values({
-      userId: session.user.id,
-      title: topic,
-      topic: topic,
-      difficulty: difficulty,
-      language: language,
-      status: "generating",
-    })
-    .returning();
+  let newLesson;
+  try {
+    const [result] = await db
+      .insert(lessons)
+      .values({
+        userId: session.user.id,
+        title: topic,
+        topic: topic,
+        difficulty: difficulty,
+        language: language,
+        status: "generating",
+      })
+      .returning();
+    newLesson = result;
+  } catch (error) {
+    console.error("DB insert error:", error);
+    return { error: "Failed to create lesson. Please try again." };
+  }
 
   if (!newLesson) {
     return { error: "Failed to create lesson" };

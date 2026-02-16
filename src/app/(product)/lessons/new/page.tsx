@@ -125,15 +125,6 @@ export default function GenerateLessonPage() {
             </form>
           </CardContent>
         </Card>
-
-        {isGenerating && (
-          <div className="text-center space-y-3 animate-pulse text-sm text-muted-foreground bg-muted/30 p-4 rounded-lg border border-border/50">
-            <p className="font-medium text-foreground">
-              Creating your lesson...
-            </p>
-            <p>This usually takes 10-20 seconds.</p>
-          </div>
-        )}
       </div>
     </div>
   );

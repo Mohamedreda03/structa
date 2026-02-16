@@ -6,15 +6,10 @@ import { requestPasswordReset } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Loader2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import { Loader2, ArrowLeft } from "lucide-react";
+import { AuthCard } from "@/components/auth/auth-card";
+import { AuthFooter } from "@/components/auth/auth-footer";
 
 export default function ForgetPasswordPage() {
   const [email, setEmail] = useState("");
@@ -42,74 +37,52 @@ export default function ForgetPasswordPage() {
 
   if (isSent) {
     return (
-      <Card className="w-full max-w-md border-border bg-card shadow-lg">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold tracking-tight">
-            Check your email
-          </CardTitle>
-          <CardDescription>
-            We&apos;ve sent a password reset link to <strong>{email}</strong>.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button asChild variant="outline" className="w-full">
-            <Link href="/sign-in">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to sign in
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
+      <AuthCard
+        title="Check your email"
+        description={`We've sent a password reset link to ${email}.`}
+      >
+        <Button asChild variant="outline" className="w-full">
+          <Link href="/sign-in">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to sign in
+          </Link>
+        </Button>
+      </AuthCard>
     );
   }
 
   return (
-    <Card className="w-full max-w-md border-border bg-card shadow-lg">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold tracking-tight">
-          Forgot password?
-        </CardTitle>
-        <CardDescription>
-          Enter your email and we&apos;ll send you a link to reset your
-          password.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleForgetPassword} className="space-y-4">
-          <fieldset disabled={isLoading} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-background border-input focus:ring-ring"
-              />
-            </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Sending link...
-                </>
-              ) : (
-                "Send reset link"
-              )}
-            </Button>
-          </fieldset>
-        </form>
-        <div className="mt-4 text-center text-sm">
-          <Link
-            className="text-primary font-medium hover:underline underline-offset-4"
-            href="/sign-in"
-          >
-            Back to sign in
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+    <AuthCard
+      title="Forgot password?"
+      description="Enter your email and we'll send you a link to reset your password."
+    >
+      <form onSubmit={handleForgetPassword} className="space-y-4">
+        <fieldset disabled={isLoading} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="bg-background border-input focus:ring-ring"
+            />
+          </div>
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Sending link...
+              </>
+            ) : (
+              "Send reset link"
+            )}
+          </Button>
+        </fieldset>
+      </form>
+      <AuthFooter text="" linkText="Back to sign in" href="/sign-in" />
+    </AuthCard>
   );
 }
